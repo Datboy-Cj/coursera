@@ -68,6 +68,7 @@ class AssessmentTests(TestCase):
         self.assertFalse(response.context['passed'])
 
     def test_detail_and_admin(self):
+        self.assertContains(self.client.get(reverse("onlinecourse:index")), "Practice")
         self.assertContains(self.client.get(reverse('onlinecourse:course_details', args=[self.course.pk])), 'Select both')
         self.user.is_staff = self.user.is_superuser = True
         self.user.save()
