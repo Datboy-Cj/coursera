@@ -8,6 +8,15 @@
 <h2 class="h4">Exam results</h2>
 {% for result in results %}
 <section class="card"><div class="card-header d-flex justify-content-between"><h3 class="h6 mb-0">{{ forloop.counter }}. {{ result.question.content }}</h3><strong>{% if result.correct %}Correct{% else %}Incorrect{% endif %}</strong></div>
-<ul class="list-group list-group-flush">{% for choice in result.choices %}<li class="list-group-item {% if choice.is_correct %}list-group-item-success{% endif %}">{{ choice.content }} {% if choice.id in selected_ids %}<span class="badge bg-primary">Your answer</span>{% endif %} {% if choice.is_correct %}<span class="text-success">Correct answer</span>{% endif %}</li>{% endfor %}</ul></section>
-{% endfor %}<a class="btn btn-outline-primary" href="{% url 'onlinecourse:course_details' course.id %}">Return to lessons</a>
+<ul class="list-group list-group-flush">
+{% for choice in result.choices %}
+{% if choice.is_correct and choice.id in selected_ids %}
+<li class="list-group-item list-group-item-success">Correct answer: {{ choice.content }}</li>
+{% elif choice.is_correct %}
+<li class="list-group-item list-group-item-warning">Not selected: {{ choice.content }}</li>
+{% elif choice.id in selected_ids %}
+<li class="list-group-item list-group-item-danger">Wrong answer: {{ choice.content }}</li>
+{% else %}<li class="list-group-item">{{ choice.content }}</li>{% endif %}
+{% endfor %}</ul></section>
+{% endfor %}<a class="btn btn-outline-primary" href="{% url 'onlinecourse:course_details' course.id %}">Retake exam</a>
 {% endblock %}

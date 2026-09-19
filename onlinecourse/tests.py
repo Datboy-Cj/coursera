@@ -74,3 +74,14 @@ class AssessmentTests(TestCase):
         self.user.save()
         self.assertContains(self.client.get('/admin/'), 'OnlineCourse')
         self.assertContains(self.client.get('/admin/'), 'Authentication and Authorization')
+
+    def test_failed_feedback_and_retake(self):
+        response = self.client.post(self.url, {'choices': [self.a.pk, self.c.pk]}, follow=True)
+        self.assertContains(response, 'Correct answer: A')
+        self.assertContains(response, 'Not selected: B')
+        self.assertContains(response, 'Wrong answer: C')
+        self.assertContains(response, 'Retake exam')
+        self.assertEqual(response.context['grade'], 0)
+        response = self.client.post(self.url, {'choices': [self.a.pk, self.b.pk]}, follow=True)
+        self.assertContains(response, 'Congratulations')
+        self.assertEqual(Submission.objects.count(), 2)

@@ -35,6 +35,10 @@ python manage.py check
 python manage.py test
 ```
 
-Ten tests cover exact-choice scoring, weighted scoring, successful and blank submissions, invalid/foreign choices, enrollment, login, HTTP method restrictions, private results, and admin rendering. A browser smoke test covered enrollment, answering questions, submission, and the displayed 100% result.
+Eleven tests cover exact-choice scoring, weighted scoring, successful and blank submissions, invalid/foreign choices, enrollment, login, HTTP method restrictions, private results, and admin rendering. A browser smoke test covered enrollment, answering questions, submission, and the displayed 100% result.
 
 This is a local educational application. Production deployment requires a private secret key, DEBUG=False, configured hostnames, HTTPS, and static/media hosting. The local database and session credentials are not included.
+
+## Full lab alignment
+
+See [LAB_CHECKLIST.md](LAB_CHECKLIST.md) for all six lab tasks, the exact Learning Django sample data, validation, and differences from the Cloud IDE procedure. After creating an admin account, run `python manage.py seed_lab` to reproduce that example.

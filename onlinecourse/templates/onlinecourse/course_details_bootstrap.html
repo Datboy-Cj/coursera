@@ -7,6 +7,9 @@
 <section class="card"><div class="card-header"><h3 class="h5 mb-0">Lesson {{ forloop.counter }}: {{ lesson.title }}</h3></div><div class="card-body lesson-copy">{{ lesson.content }}</div></section>
 {% empty %}<p>No lessons published yet.</p>{% endfor %}
 {% if is_enrolled %}
+{% if course.question_set.exists %}
+<button class="btn btn-primary mt-4" type="button" data-bs-toggle="collapse" data-bs-target="#exam" aria-expanded="false" aria-controls="exam">Start Exam</button>
+<div class="collapse" id="exam">
 <h2 class="h4 mt-4">Course exam</h2><p>Select every correct answer for each question. You need more than 80% to pass.</p>
 <form action="{% url 'onlinecourse:submit' course.id %}" method="post">{% csrf_token %}
 {% for question in course.question_set.all %}
@@ -17,6 +20,8 @@
 {% empty %}<p>No exam published yet.</p>{% endfor %}
 {% if course.question_set.exists %}<button class="btn btn-primary" type="submit">Submit exam</button>{% endif %}
 </form>
+</div>
+{% else %}<p>No exam published yet.</p>{% endif %}
 {% elif user.is_authenticated %}<a class="btn btn-primary" href="{% url 'onlinecourse:enroll' course.id %}">Enroll to take the exam</a>
 {% else %}<a class="btn btn-primary" href="{% url 'onlinecourse:login' %}">Sign in to enroll</a>{% endif %}
 {% endblock %}
