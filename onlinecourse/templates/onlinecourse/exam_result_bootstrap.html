@@ -1,0 +1,13 @@
+{% extends 'onlinecourse/base_assessment.html' %}
+{% block title %}Exam results — {{ course.name }}{% endblock %}
+{% block content %}
+<p class="text-uppercase text-muted">{{ course.name }}</p>
+{% if passed %}<section class="alert alert-success"><h1>Congratulations, {{ user.first_name|default:user.username }}!</h1><p>You passed the course exam.</p>
+{% else %}<section class="alert alert-warning"><h1>Keep practicing</h1><p>Review the lessons and try again. You need more than 80% to pass.</p>{% endif %}
+<p class="score mb-0">Score: {{ grade|floatformat:0 }}% <span class="fs-5">({{ earned }} / {{ total }} points)</span></p></section>
+<h2 class="h4">Exam results</h2>
+{% for result in results %}
+<section class="card"><div class="card-header d-flex justify-content-between"><h3 class="h6 mb-0">{{ forloop.counter }}. {{ result.question.content }}</h3><strong>{% if result.correct %}Correct{% else %}Incorrect{% endif %}</strong></div>
+<ul class="list-group list-group-flush">{% for choice in result.choices %}<li class="list-group-item {% if choice.is_correct %}list-group-item-success{% endif %}">{{ choice.content }} {% if choice.id in selected_ids %}<span class="badge bg-primary">Your answer</span>{% endif %} {% if choice.is_correct %}<span class="text-success">Correct answer</span>{% endif %}</li>{% endfor %}</ul></section>
+{% endfor %}<a class="btn btn-outline-primary" href="{% url 'onlinecourse:course_details' course.id %}">Return to lessons</a>
+{% endblock %}
